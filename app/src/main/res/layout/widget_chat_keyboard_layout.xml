@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffe0e0e0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:paddingBottom="4dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/tvRefrenceText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_f8f8f8"
+                android:singleLine="true"
+                android:textColor="@color/color_999999"
+                android:textSize="16sp"
+                android:visibility="gone"
+                android:padding="@dimen/dp_4"
+                tools:text="sdsddddddddddddddddddddddddddddddddsss" />
+
+            <EditText
+                android:id="@+id/etMessageKeyBoard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:button="@drawable/ic_emotion_widget"
+                android:maxLines="4"
+                android:textSize="16sp"
+                tools:text="sdsddddddddddddddddddddddddddddddddsss" />
+
+        </LinearLayout>
+
+
+        <CheckBox
+            android:id="@+id/cbEmotionKeyBoard"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="15dp"
+            android:button="@drawable/drawable_emotion_button_selector" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom">
+
+            <CheckBox
+                android:id="@+id/cbAddKeyBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:button="@drawable/ic_add_widget" />
+
+            <TextView
+                android:id="@+id/tvSendKeyBoard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="5dp"
+                android:background="#ff3f51b5"
+                android:paddingBottom="4dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="4dp"
+                android:text="发送"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#ffe0e0e0" />
+
+    <FrameLayout
+        android:id="@+id/flContentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <com.joker.emotionkeyboard.keyboard.EmotionGroupView
+            android:id="@+id/emotionGroupView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <com.joker.emotionkeyboard.keyboard.FunctionGroupView
+            android:id="@+id/functionGroupView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</LinearLayout>
