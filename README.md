@@ -4,7 +4,7 @@
 
 ![效果图](https://github.com/joker-fu/keyborad/blob/master/image/1.png)
 
-![效果图](https://github.com/joker-fu/keyborad/blob/master/image/1.png)
+![效果图](https://github.com/joker-fu/keyborad/blob/master/image/2.png)
 
 #### 说明
 
