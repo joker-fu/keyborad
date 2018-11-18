@@ -196,7 +196,12 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
 
     private fun unlockContentHeightDelayed() {
         if (bindContentView != null) {
-            handler.postDelayed({ (bindContentView?.layoutParams as LinearLayoutCompat.LayoutParams).weight = 1f }, 200L)
+            handler.postDelayed({
+                bindContentView?.apply {
+                    (layoutParams as LinearLayoutCompat.LayoutParams).weight = 1f
+                    invalidate()
+                }
+            }, 100L)
         }
     }
 
@@ -209,7 +214,7 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
             //软件盘显示后，释放内容高度
             etMessageKeyBoard.postDelayed({
                 unlockContentHeightDelayed()
-            }, 200L)
+            }, 100L)
         }
         return false
     }
