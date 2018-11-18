@@ -19,12 +19,10 @@ import android.util.Log
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
-import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.CompoundButton
 import android.widget.EditText
 import com.joker.emotionkeyboard.R
-import com.joker.emotionkeyboard.R.id.*
 import com.joker.emotionkeyboard.keyboard.data.EmotionGroupType
 import com.joker.emotionkeyboard.keyboard.util.EmotionUtil
 import com.joker.emotionkeyboard.keyboard.util.Util
@@ -72,8 +70,6 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
 
         View.inflate(context, R.layout.widget_chat_keyboard_layout, this)
 
-//        setSoftInputAdjustResize()
-
         activity.lifecycle.addObserver(object : LifecycleObserver {
             @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
             fun onPause() {
@@ -94,20 +90,15 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
         cbEmotionKeyBoard.setOnCheckedChangeListener(this)
     }
 
-    /*软键盘以顶起当前界面的形式出现, 注意这种方式会使得当前布局的高度发生变化，
-    触发当前布局onSizeChanged方法回调，这里前后高度差就是软键盘的高度了*/
-    private fun setSoftInputAdjustResize() {
-        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-//        activity.window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-//        or WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
-    }
-
     /**
      * 编辑框获取焦点，并显示软件盘
      */
     private fun showSoftInput() {
         etMessageKeyBoard.requestFocus()
-        etMessageKeyBoard.post({ inputMethodManager.showSoftInput(etMessageKeyBoard, 0) })
+        etMessageKeyBoard.post({
+            inputMethodManager.showSoftInput(etMessageKeyBoard, 0)
+            getSupportSoftInputHeight()
+        })
     }
 
     /**
@@ -137,7 +128,7 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
          * 这是因为高度是包括了虚拟按键栏的(例如华为系列)，所以在API Level高于20时，
          * 我们需要减去底部虚拟按键栏的高度（如果有的话）
          */
-        if (Build.VERSION.SDK_INT >= 20) {
+        if (softInputHeight == 144 && Build.VERSION.SDK_INT >= 20) {
             // When SDK Level >= 20 (Android L), the softInputHeight will contain the height of softButtonsBar (if has)
             softInputHeight -= getSoftButtonsBarHeight()
         }
@@ -180,7 +171,7 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
     /**
      * 获取软键盘高度
      */
-    fun getKeyBoardHeight(): Int {
+    fun getSharedKeyBoardHeight(): Int {
         return sharedPreference.getInt(SHARE_PREFERENCE_SOFT_INPUT_HEIGHT, Util.dp2px(context, 282F))
     }
 
@@ -216,7 +207,9 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
             hideEmotionGroupView()
             hideAddGroupView()
             //软件盘显示后，释放内容高度
-            etMessageKeyBoard.postDelayed({ unlockContentHeightDelayed() }, 200L)
+            etMessageKeyBoard.postDelayed({
+                unlockContentHeightDelayed()
+            }, 200L)
         }
         return false
     }
@@ -267,8 +260,8 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
      */
     private fun showChatKeyBoardContent() {
         var softInputHeight = getSupportSoftInputHeight()
-        if (softInputHeight == 0) {
-            softInputHeight = getKeyBoardHeight()
+        if (softInputHeight <= 0) {
+            softInputHeight = getSharedKeyBoardHeight()
         } else {
             hideSoftInput()
         }
@@ -352,7 +345,7 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
         if (keyCode == KeyEvent.KEYCODE_DEL && event?.action == KeyEvent.ACTION_DOWN) {
             (v as? EditText)?.let {
                 if (it.text?.length == 0) {
-                    clearRefrenceLabel()
+                    clearReferenceLabel()
                 }
             }
         }
@@ -389,8 +382,9 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
      */
     fun setRefrenceText(charSequence: CharSequence?) {
         tvRefrenceText.visibility = View.VISIBLE
-        tvRefrenceText.text = EmotionUtil.getEmotionContent(context, EmotionGroupType.EMOTION_TYPE_CLASSIC, charSequence?.toString()
-                ?: "")
+        val str = EmotionUtil.getEmotionContent(context, EmotionGroupType.EMOTION_TYPE_CLASSIC,
+                charSequence?.toString() ?: "")
+        tvRefrenceText.text = str
     }
 
     /**
@@ -403,7 +397,7 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
     /**
      * 是否含有引用消息
      */
-    fun isShowRefrenceText(): Boolean {
+    fun isShowReferenceText(): Boolean {
         return tvRefrenceText.visibility == View.VISIBLE
     }
 
@@ -411,11 +405,11 @@ class ChatKeyBoard : LinearLayoutCompat, CompoundButton.OnCheckedChangeListener,
      * 清除编辑框输入数据
      */
     fun clearEditText() {
-        clearRefrenceLabel()
+        clearReferenceLabel()
         etMessageKeyBoard.text.clear()
     }
 
-    private fun clearRefrenceLabel() {
+    private fun clearReferenceLabel() {
         tvRefrenceText.text = ""
         tvRefrenceText.visibility = View.GONE
     }

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.EditText
 import android.widget.Toast
-import com.joker.emotionkeyboard.R.id.*
 import com.joker.emotionkeyboard.keyboard.OnChatKeyBoardListener
 import com.joker.emotionkeyboard.keyboard.data.Emotion
 import com.joker.emotionkeyboard.keyboard.data.EmotionGroupType
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         chatKeyBoard.setOnChatKeyBoardListener(object : OnChatKeyBoardListener {
             override fun onSendClick(editText: EditText) {
                 val msg = editText.text.toString()
-                if (!chatKeyBoard.isShowRefrenceText()) {
+                if (!chatKeyBoard.isShowReferenceText()) {
                     //消息引用是否显示
                 }
                 val content =
